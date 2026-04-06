@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal" android:paddingHorizontal="24dp" android:paddingTop="24dp" android:paddingBottom="8dp">
+
+    <ImageView android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_check_circle" app:tint="?attr/colorPrimary" android:layout_marginBottom="16dp" android:contentDescription="@null" />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/url_changed_title" android:textAppearance="?attr/textAppearanceHeadlineSmall" android:textStyle="bold" android:layout_marginBottom="8dp" />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/url_changed_message" android:textAppearance="?attr/textAppearanceBodyMedium" android:textColor="?attr/colorOnSurfaceVariant" android:gravity="center" android:layout_marginBottom="12dp" />
+
+    <TextView android:id="@+id/urlChangedUrl" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorPrimary" android:gravity="center" android:background="?attr/colorSurfaceContainerHigh" android:padding="12dp" />
+
+</LinearLayout>

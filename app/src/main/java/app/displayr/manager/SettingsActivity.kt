@@ -78,9 +78,9 @@ class SettingsActivity : AppCompatActivity() {
         // Version info
         try {
             val pInfo = packageManager.getPackageInfo(packageName, 0)
-            versionValue.text = "${pInfo.versionName} (build ${pInfo.longVersionCode})"
+            versionValue.text = getString(R.string.app_name) + " v${pInfo.versionName}"
         } catch (_: Exception) {
-            versionValue.text = "Unknown"
+            versionValue.text = getString(R.string.app_name)
         }
 
         // URL card

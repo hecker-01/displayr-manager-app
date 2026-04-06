@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="24dp" android:paddingTop="8dp">
 
-    <com.google.android.material.textfield.TextInputLayout android:id="@+id/urlEditLayout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="8dp" style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+    <com.google.android.material.textfield.TextInputLayout android:id="@+id/urlEditLayout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" app:startIconDrawable="@drawable/ic_link" app:boxCornerRadiusTopStart="12dp" app:boxCornerRadiusTopEnd="12dp" app:boxCornerRadiusBottomStart="12dp" app:boxCornerRadiusBottomEnd="12dp" style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText android:id="@+id/urlEditInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/setup_url_hint" android:inputType="textUri" android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton android:id="@+id/urlEditScanButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/setup_scan_qr" style="?attr/materialButtonOutlinedStyle" app:icon="@android:drawable/ic_menu_camera" />
+    <com.google.android.material.button.MaterialButton android:id="@+id/urlEditScanButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/setup_scan_qr" style="@style/Widget.Material3.Button.TonalButton" app:icon="@drawable/ic_qr_code" app:iconGravity="textStart" app:cornerRadius="12dp" />
 
 </LinearLayout>

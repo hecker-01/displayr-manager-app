@@ -7,6 +7,6 @@
 
         <include android:id="@+id/errorPageContainer" layout="@layout/error_page" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@+id/settingsFab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="16dp" android:contentDescription="@string/settings_title" app:srcCompat="@drawable/ic_settings" app:fabSize="mini" app:backgroundTint="?attr/colorSurfaceVariant" app:tint="?attr/colorOnSurfaceVariant" app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@+id/settingsFab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="16dp" android:layout_marginBottom="16dp" android:contentDescription="@string/settings_title" app:srcCompat="@drawable/ic_settings" app:fabSize="mini" app:backgroundTint="?attr/colorSurfaceContainerHigh" app:tint="?attr/colorOnSurfaceVariant" app:elevation="2dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

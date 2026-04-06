@@ -182,9 +182,11 @@ class MainActivity : AppCompatActivity() {
             val prefs = getSharedPreferences("displayr_prefs", MODE_PRIVATE)
             prefs.edit().putString("app_url", newUrl).apply()
             currentAppUrl = newUrl
+            val dialogView = layoutInflater.inflate(R.layout.dialog_url_changed, null)
+            dialogView.findViewById<android.widget.TextView>(R.id.urlChangedUrl).text = newUrl
+
             MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.url_changed_title)
-                .setMessage(R.string.url_changed_message)
+                .setView(dialogView)
                 .setPositiveButton(R.string.ok) { dialog, _ ->
                     dialog.dismiss()
                     loadAppUrl()

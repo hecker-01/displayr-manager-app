@@ -29,41 +29,49 @@
     <string name="no_changelog">No changelog available.</string>
 
     <!-- Setup -->
-    <string name="setup_title">Welcome to the Displayr Manager</string>
-    <string name="setup_welcome_description">Please go through these steps to set up the app properly.</string>
+    <string name="setup_title">Welcome to Displayr</string>
+    <string name="setup_welcome_description">Let\'s get your display configured in just a couple of steps.</string>
     <string name="setup_get_started">Get Started</string>
-    <string name="setup_url_set_from_qr">Successfully set URL from QR code</string>
+    <string name="setup_step_1_of_2">Step 1 of 2</string>
+    <string name="setup_step_2_of_2">Step 2 of 2</string>
+    <string name="setup_url_set_from_qr">URL detected from QR code</string>
     <string name="url_changed_title">URL Changed</string>
-    <string name="url_changed_message">Display URL has been updated.</string>
+    <string name="url_changed_message">The display URL has been updated. Tap OK to load it.</string>
     <string name="ok">OK</string>
-    <string name="setup_update_step">Checking for updates</string>
+    <string name="setup_update_step">App Updates</string>
+    <string name="setup_update_subtitle">Making sure you\'re running the latest version.</string>
     <string name="setup_update_checking">Checking for the latest version…</string>
     <string name="setup_skip">Skip</string>
     <string name="setup_continue">Continue</string>
-    <string name="setup_url_step">Configure Display URL</string>
-    <string name="setup_url_prompt">Enter the URL of your display server, or scan a QR code.</string>
-    <string name="setup_url_hint">Display URL</string>
+    <string name="setup_done">Finish Setup</string>
+    <string name="setup_url_step">Display URL</string>
+    <string name="setup_url_prompt">Enter the URL your display should load, or scan a QR code to fill it in automatically.</string>
+    <string name="setup_url_hint">https://example.com</string>
     <string name="setup_scan_qr">Scan QR Code</string>
     <string name="setup_url_invalid">URL must start with http:// or https://</string>
     <string name="setup_url_empty">Please enter a URL</string>
 
     <!-- QR Scanner -->
     <string name="qr_scanner_title">Scan QR Code</string>
+    <string name="qr_scanner_instruction">Point your camera at a QR code</string>
     <string name="qr_enter_manually">Enter URL manually</string>
     <string name="qr_camera_permission_required">Camera permission is required to scan QR codes</string>
     <string name="qr_no_valid_url">QR code does not contain a valid URL</string>
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
-    <string name="settings_app_url">App URL</string>
+    <string name="settings_app_url">Display URL</string>
     <string name="settings_app_url_not_set">Not configured</string>
     <string name="settings_change_url">Change URL</string>
-    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_clear_cache">Clear Cache</string>
     <string name="settings_clear_cache_summary">Clear stored web data and cache</string>
     <string name="settings_cache_cleared">Cache cleared</string>
     <string name="settings_version">Version</string>
-    <string name="settings_url_dialog_title">App URL</string>
+    <string name="settings_url_dialog_title">Display URL</string>
 
     <!-- Error page -->
+    <string name="error_connection_title">Connection Error</string>
+    <string name="error_unable_to_load">Unable to load the page</string>
+    <string name="error_retry">Retry</string>
     <string name="change_url">Change URL</string>
 </resources>
