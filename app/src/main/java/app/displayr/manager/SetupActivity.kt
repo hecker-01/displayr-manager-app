@@ -1,7 +1,6 @@
 package app.displayr.manager
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.format.Formatter
 import android.view.View
@@ -12,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import app.displayr.manager.updater.AppUpdater
 import app.displayr.manager.updater.UpdateChecker
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -36,6 +36,9 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var urlLayout: TextInputLayout
 
     private var urlFromDeepLink: String? = null
+
+    // Must be created before STARTED so registerForActivityResult is called in time
+    private val appUpdater = AppUpdater(this)
 
     private val qrLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -114,6 +117,39 @@ class SetupActivity : AppCompatActivity() {
                 }
             }
         })
+
+        appUpdater.onStateChanged = fun(state: AppUpdater.State, message: String) {
+            updateSubtitle.text = message
+            when (state) {
+                AppUpdater.State.DOWNLOADING -> {
+                    updateButton.isEnabled = false
+                    skipButton.isEnabled = false
+                    updateProgress.isIndeterminate = true
+                    updateProgress.visibility = View.VISIBLE
+                }
+                AppUpdater.State.INSTALLING -> {
+                    updateButton.isEnabled = false
+                    skipButton.isEnabled = false
+                    updateProgress.isIndeterminate = true
+                    updateProgress.visibility = View.VISIBLE
+                }
+                else -> {
+                    updateButton.isEnabled = true
+                    skipButton.isEnabled = true
+                    updateProgress.visibility = View.GONE
+                }
+            }
+        }
+
+        appUpdater.onDownloadProgress = { pct ->
+            if (pct >= 0) {
+                updateProgress.isIndeterminate = false
+                updateProgress.progress = pct
+            } else {
+                updateProgress.isIndeterminate = true
+            }
+            updateProgress.visibility = View.VISIBLE
+        }
 
         updateButton.setOnClickListener {
             showUpdateDialog()
@@ -218,16 +254,17 @@ class SetupActivity : AppCompatActivity() {
             .setView(dialogView)
             .setPositiveButton(R.string.update_button) { dialog, _ ->
                 dialog.dismiss()
-                // Open the APK download URL in the browser for setup flow
-                val apkUrl = UpdateChecker.latestApkUrl
-                if (apkUrl != null) {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(apkUrl)))
-                }
+                appUpdater.startDownload(this)
             }
             .setNegativeButton(R.string.setup_skip) { dialog, _ ->
                 dialog.dismiss()
                 goToUrlStep()
             }
             .show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        appUpdater.cleanup()
     }
 }

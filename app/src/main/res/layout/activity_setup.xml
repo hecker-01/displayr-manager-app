@@ -59,7 +59,7 @@
 
                         <com.google.android.material.button.MaterialButton android:id="@+id/setupSkipButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_skip" style="@style/Widget.Material3.Button.TextButton" android:layout_marginEnd="8dp" android:visibility="gone" />
 
-                        <com.google.android.material.button.MaterialButton android:id="@+id/setupUpdateButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/update_button" app:icon="@drawable/ic_cloud_download" android:visibility="gone" />
+                        <com.google.android.material.button.MaterialButton android:id="@+id/setupUpdateButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/update_button" app:icon="@drawable/ic_download" android:visibility="gone" />
 
                         <com.google.android.material.button.MaterialButton android:id="@+id/setupContinueButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_continue" android:visibility="gone" />
 
