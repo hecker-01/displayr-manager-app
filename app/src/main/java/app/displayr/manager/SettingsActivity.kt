@@ -3,6 +3,7 @@ package app.displayr.manager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.format.Formatter
@@ -69,6 +70,12 @@ class SettingsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishWithResult()
+            }
+        })
 
         val toolbar = findViewById<MaterialToolbar>(R.id.settingsToolbar)
         toolbar.setNavigationOnClickListener { finishWithResult() }
@@ -158,11 +165,6 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("Use onBackPressedDispatcher")
-    override fun onBackPressed() {
-        finishWithResult()
-    }
-
     private fun finishWithResult() {
         val resultIntent = Intent().apply {
             putExtra("url_changed", urlChanged)
@@ -214,6 +216,7 @@ class SettingsActivity : AppCompatActivity() {
         prefs.edit().putString("app_url", url).apply()
         urlValue.text = url
         urlChanged = true
+        finishWithResult()
     }
 
     private fun showUpdateDialog() {
