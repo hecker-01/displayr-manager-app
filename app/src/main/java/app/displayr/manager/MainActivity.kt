@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var retryButton: Button
     private lateinit var changeUrlButton: Button
     private lateinit var settingsFab: FloatingActionButton
+    private lateinit var updateBadge: View
     private var lastFailedUrl: String? = null
     private var currentAppUrl: String? = null
 
@@ -96,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         retryButton = findViewById(R.id.retryButton)
         changeUrlButton = findViewById(R.id.changeUrlButton)
         settingsFab = findViewById(R.id.settingsFab)
+        updateBadge = findViewById(R.id.updateBadge)
 
         retryButton.setOnClickListener {
             lastFailedUrl?.let { url ->
@@ -173,6 +175,13 @@ class MainActivity : AppCompatActivity() {
 
         // Fire-and-forget update check
         UpdateChecker.check(this)
+
+        // Show red dot on FAB when an update is available
+        val showBadge: () -> Unit = {
+            updateBadge.visibility = if (UpdateChecker.updateAvailable) View.VISIBLE else View.GONE
+        }
+        UpdateChecker.addListener(showBadge)
+        showBadge()
     }
 
     override fun onNewIntent(intent: Intent) {

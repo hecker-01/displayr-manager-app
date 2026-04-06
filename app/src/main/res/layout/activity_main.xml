@@ -9,4 +9,6 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@+id/settingsFab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="16dp" android:layout_marginBottom="16dp" android:contentDescription="@string/settings_title" app:srcCompat="@drawable/ic_settings" app:fabSize="mini" app:backgroundTint="?attr/colorSurfaceContainerHigh" app:tint="?attr/colorOnSurfaceVariant" app:elevation="2dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" />
 
+        <View android:id="@+id/updateBadge" android:layout_width="8dp" android:layout_height="8dp" android:visibility="gone" android:translationZ="12dp" android:translationX="-15dp" android:translationY="15dp" android:background="@drawable/badge_dot" app:layout_constraintTop_toTopOf="@id/settingsFab" app:layout_constraintEnd_toEndOf="@id/settingsFab" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
