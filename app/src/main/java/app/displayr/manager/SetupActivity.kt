@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import io.noties.markwon.Markwon
 import android.widget.ViewFlipper
+import androidx.activity.OnBackPressedCallback
 
 class SetupActivity : AppCompatActivity() {
 
@@ -99,12 +100,20 @@ class SetupActivity : AppCompatActivity() {
             UpdateChecker.check(this)
         }
 
-        // If URL was set from deep link, show success and change continue behavior
-        if (urlFromDeepLink != null) {
-            val qrSuccess = findViewById<TextView>(R.id.setupQrSuccessText)
-            qrSuccess.text = getString(R.string.setup_url_set_from_qr)
-            qrSuccess.visibility = View.VISIBLE
-        }
+        // Back button: go to previous setup page, or exit on welcome
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (viewFlipper.displayedChild > 0) {
+                    viewFlipper.setInAnimation(this@SetupActivity, R.anim.slide_in_left)
+                    viewFlipper.setOutAnimation(this@SetupActivity, R.anim.slide_out_right)
+                    viewFlipper.showPrevious()
+                    viewFlipper.setInAnimation(this@SetupActivity, R.anim.slide_in_right)
+                    viewFlipper.setOutAnimation(this@SetupActivity, R.anim.slide_out_left)
+                } else {
+                    finish()
+                }
+            }
+        })
 
         updateButton.setOnClickListener {
             showUpdateDialog()
@@ -159,12 +168,14 @@ class SetupActivity : AppCompatActivity() {
     }
 
     private fun proceedAfterUpdateStep() {
+        goToUrlStep()
+        // Pre-fill URL and show success if it was set from deep link/QR
         val deepUrl = urlFromDeepLink
         if (deepUrl != null) {
-            // URL already set from QR/deep link — skip URL step, go to main
-            saveUrlAndFinish(deepUrl)
-        } else {
-            goToUrlStep()
+            urlInput.setText(deepUrl)
+            val qrSuccess = findViewById<TextView>(R.id.setupQrSuccessText)
+            qrSuccess.text = getString(R.string.setup_url_set_from_qr)
+            qrSuccess.visibility = View.VISIBLE
         }
     }
 

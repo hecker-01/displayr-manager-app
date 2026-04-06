@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                 if (webView.canGoBack()) {
                     webView.goBack()
                 } else {
-                    finish()
+                    finishAffinity()
                 }
             }
         })

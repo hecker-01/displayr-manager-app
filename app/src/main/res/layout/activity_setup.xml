@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/setupRoot" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="?android:attr/colorBackground">
 
-    <ViewFlipper android:id="@+id/viewFlipper" android:layout_width="match_parent" android:layout_height="match_parent" android:inAnimation="@android:anim/slide_in_left" android:outAnimation="@android:anim/slide_out_right">
+    <ViewFlipper android:id="@+id/viewFlipper" android:layout_width="match_parent" android:layout_height="match_parent" android:inAnimation="@anim/slide_in_right" android:outAnimation="@anim/slide_out_left">
 
         <!-- Step 0: Welcome -->
         <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
@@ -38,8 +38,6 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView android:id="@+id/setupQrSuccessText" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="?attr/textAppearanceTitleSmall" android:textColor="?attr/colorPrimary" android:gravity="center" android:visibility="gone" android:layout_marginBottom="16dp" />
-
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="end" android:layout_marginTop="8dp">
 
                     <com.google.android.material.button.MaterialButton android:id="@+id/setupSkipButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_skip" style="?attr/materialButtonOutlinedStyle" android:layout_marginEnd="8dp" android:visibility="gone" />
@@ -61,6 +59,8 @@
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_url_step" android:textAppearance="?attr/textAppearanceHeadlineMedium" android:layout_marginBottom="8dp" />
 
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_url_prompt" android:textAppearance="?attr/textAppearanceBodyMedium" android:textColor="?attr/colorOnSurfaceVariant" android:gravity="center" android:layout_marginBottom="32dp" />
+
+                <TextView android:id="@+id/setupQrSuccessText" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="?attr/textAppearanceTitleSmall" android:textColor="?attr/colorPrimary" android:gravity="center" android:visibility="gone" android:layout_marginBottom="16dp" />
 
                 <com.google.android.material.textfield.TextInputLayout android:id="@+id/setupUrlLayout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
