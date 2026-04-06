@@ -34,6 +34,8 @@ class SetupActivity : AppCompatActivity() {
     private lateinit var urlInput: TextInputEditText
     private lateinit var urlLayout: TextInputLayout
 
+    private var urlFromDeepLink: String? = null
+
     private val qrLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -57,8 +59,8 @@ class SetupActivity : AppCompatActivity() {
             insets
         }
 
-        // Handle deep link
-        if (handleDeepLink(intent)) return
+        // Check for deep link URL
+        urlFromDeepLink = extractDeepLinkUrl(intent)
 
         viewFlipper = findViewById(R.id.viewFlipper)
         updateSubtitle = findViewById(R.id.setupUpdateSubtitle)
@@ -69,7 +71,7 @@ class SetupActivity : AppCompatActivity() {
         urlInput = findViewById(R.id.setupUrlInput)
         urlLayout = findViewById(R.id.setupUrlLayout)
 
-        // Step 1: Update check
+        // Step 1: Update check listener (defined early so welcome button can reference it)
         val updateListener: () -> Unit = {
             updateProgress.visibility = View.GONE
             if (UpdateChecker.updateAvailable) {
@@ -88,19 +90,32 @@ class SetupActivity : AppCompatActivity() {
                 continueButton.visibility = View.VISIBLE
             }
         }
-        UpdateChecker.addListener(updateListener)
-        UpdateChecker.check(this)
+
+        // Step 0: Welcome
+        findViewById<MaterialButton>(R.id.setupGetStartedButton).setOnClickListener {
+            viewFlipper.showNext()
+            // Start update check when entering step 1
+            UpdateChecker.addListener(updateListener)
+            UpdateChecker.check(this)
+        }
+
+        // If URL was set from deep link, show success and change continue behavior
+        if (urlFromDeepLink != null) {
+            val qrSuccess = findViewById<TextView>(R.id.setupQrSuccessText)
+            qrSuccess.text = getString(R.string.setup_url_set_from_qr)
+            qrSuccess.visibility = View.VISIBLE
+        }
 
         updateButton.setOnClickListener {
             showUpdateDialog()
         }
 
         skipButton.setOnClickListener {
-            goToUrlStep()
+            proceedAfterUpdateStep()
         }
 
         continueButton.setOnClickListener {
-            goToUrlStep()
+            proceedAfterUpdateStep()
         }
 
         // Step 2: URL configuration
@@ -127,19 +142,30 @@ class SetupActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        handleDeepLink(intent)
+        val url = extractDeepLinkUrl(intent)
+        if (url != null) {
+            urlFromDeepLink = url
+            saveUrlAndFinish(url)
+        }
     }
 
-    private fun handleDeepLink(intent: Intent): Boolean {
-        val data = intent.data ?: return false
+    private fun extractDeepLinkUrl(intent: Intent): String? {
+        val data = intent.data ?: return null
         if (data.scheme == "displayr") {
             val url = data.getQueryParameter("url")
-            if (!url.isNullOrBlank()) {
-                saveUrlAndFinish(url)
-                return true
-            }
+            if (!url.isNullOrBlank()) return url
         }
-        return false
+        return null
+    }
+
+    private fun proceedAfterUpdateStep() {
+        val deepUrl = urlFromDeepLink
+        if (deepUrl != null) {
+            // URL already set from QR/deep link — skip URL step, go to main
+            saveUrlAndFinish(deepUrl)
+        } else {
+            goToUrlStep()
+        }
     }
 
     private fun goToUrlStep() {
@@ -148,7 +174,10 @@ class SetupActivity : AppCompatActivity() {
 
     private fun saveUrlAndFinish(url: String) {
         val prefs = getSharedPreferences("displayr_prefs", MODE_PRIVATE)
-        prefs.edit().putString("app_url", url).apply()
+        prefs.edit()
+            .putString("app_url", url)
+            .putBoolean("is_setup_complete", true)
+            .apply()
         startActivity(Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         })

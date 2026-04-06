@@ -4,14 +4,26 @@
 
     <ViewFlipper android:id="@+id/viewFlipper" android:layout_width="match_parent" android:layout_height="match_parent" android:inAnimation="@android:anim/slide_in_left" android:outAnimation="@android:anim/slide_out_right">
 
+        <!-- Step 0: Welcome -->
+        <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="32dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_title" android:textAppearance="?attr/textAppearanceHeadlineMedium" android:layout_marginBottom="16dp" />
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_welcome_description" android:textAppearance="?attr/textAppearanceBodyLarge" android:textColor="?attr/colorOnSurfaceVariant" android:gravity="center" android:layout_marginBottom="48dp" />
+
+                <com.google.android.material.button.MaterialButton android:id="@+id/setupGetStartedButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_get_started" />
+
+            </LinearLayout>
+        </ScrollView>
+
         <!-- Step 1: Update Check -->
         <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="32dp">
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_title" android:textAppearance="?attr/textAppearanceHeadlineMedium" android:layout_marginBottom="8dp" />
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_update_step" android:textAppearance="?attr/textAppearanceTitleMedium" android:textColor="?attr/colorOnSurfaceVariant" android:layout_marginBottom="32dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_update_step" android:textAppearance="?attr/textAppearanceHeadlineMedium" android:layout_marginBottom="32dp" />
 
                 <com.google.android.material.card.MaterialCardView android:id="@+id/setupUpdateCard" android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="12dp" style="?attr/materialCardViewOutlinedStyle" android:layout_marginBottom="24dp">
 
@@ -25,6 +37,8 @@
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
+
+                <TextView android:id="@+id/setupQrSuccessText" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="?attr/textAppearanceTitleSmall" android:textColor="?attr/colorPrimary" android:gravity="center" android:visibility="gone" android:layout_marginBottom="16dp" />
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="end" android:layout_marginTop="8dp">
 

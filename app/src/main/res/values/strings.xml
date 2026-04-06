@@ -29,7 +29,13 @@
     <string name="no_changelog">No changelog available.</string>
 
     <!-- Setup -->
-    <string name="setup_title">Welcome to Displayr</string>
+    <string name="setup_title">Welcome to the Displayr Manager</string>
+    <string name="setup_welcome_description">Please go through these steps to set up the app properly.</string>
+    <string name="setup_get_started">Get Started</string>
+    <string name="setup_url_set_from_qr">Successfully set URL from QR code</string>
+    <string name="url_changed_title">URL Changed</string>
+    <string name="url_changed_message">Display URL has been updated.</string>
+    <string name="ok">OK</string>
     <string name="setup_update_step">Checking for updates</string>
     <string name="setup_update_checking">Checking for the latest version…</string>
     <string name="setup_skip">Skip</string>

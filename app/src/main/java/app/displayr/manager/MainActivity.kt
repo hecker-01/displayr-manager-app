@@ -22,6 +22,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import app.displayr.manager.updater.UpdateChecker
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -57,18 +58,23 @@ class MainActivity : AppCompatActivity() {
 
         DynamicColors.applyToActivityIfAvailable(this)
 
-        // Check if app URL is configured, if not go to setup
+        // Check if app has completed setup
         val prefs = getSharedPreferences("displayr_prefs", MODE_PRIVATE)
+        val isSetupComplete = prefs.getBoolean("is_setup_complete", false)
         currentAppUrl = prefs.getString("app_url", null)
 
-        // Handle deep link
-        if (handleDeepLink(intent)) {
-            // URL was set from deep link, refresh currentAppUrl
-            currentAppUrl = prefs.getString("app_url", null)
+        // Handle deep link on cold launch
+        val deepLinkUrl = extractDeepLinkUrl(intent)
+        if (deepLinkUrl != null && isSetupComplete) {
+            prefs.edit().putString("app_url", deepLinkUrl).apply()
+            currentAppUrl = deepLinkUrl
         }
 
-        if (currentAppUrl == null) {
-            startActivity(Intent(this, SetupActivity::class.java))
+        if (!isSetupComplete) {
+            // Pass deep link intent through to SetupActivity
+            val setupIntent = Intent(this, SetupActivity::class.java)
+            if (intent.data != null) setupIntent.data = intent.data
+            startActivity(setupIntent)
             finish()
             return
         }
@@ -171,26 +177,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        if (handleDeepLink(intent)) {
+        val newUrl = extractDeepLinkUrl(intent)
+        if (newUrl != null) {
             val prefs = getSharedPreferences("displayr_prefs", MODE_PRIVATE)
-            currentAppUrl = prefs.getString("app_url", null)
-            if (currentAppUrl != null) {
-                loadAppUrl()
-            }
+            prefs.edit().putString("app_url", newUrl).apply()
+            currentAppUrl = newUrl
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.url_changed_title)
+                .setMessage(R.string.url_changed_message)
+                .setPositiveButton(R.string.ok) { dialog, _ ->
+                    dialog.dismiss()
+                    loadAppUrl()
+                }
+                .setCancelable(false)
+                .show()
         }
     }
 
-    private fun handleDeepLink(intent: Intent): Boolean {
-        val data = intent.data ?: return false
+    private fun extractDeepLinkUrl(intent: Intent): String? {
+        val data = intent.data ?: return null
         if (data.scheme == "displayr") {
             val url = data.getQueryParameter("url")
-            if (!url.isNullOrBlank()) {
-                val prefs = getSharedPreferences("displayr_prefs", MODE_PRIVATE)
-                prefs.edit().putString("app_url", url).apply()
-                return true
-            }
+            if (!url.isNullOrBlank()) return url
         }
-        return false
+        return null
     }
 
     private fun openSettings() {
