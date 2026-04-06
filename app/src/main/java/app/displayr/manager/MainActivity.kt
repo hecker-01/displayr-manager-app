@@ -1,6 +1,7 @@
 package app.displayr.manager
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Bundle
@@ -15,10 +16,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import app.displayr.manager.updater.UpdateChecker
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
@@ -27,15 +31,48 @@ class MainActivity : AppCompatActivity() {
     private lateinit var errorMessage: TextView
     private lateinit var errorDetails: TextView
     private lateinit var retryButton: Button
+    private lateinit var changeUrlButton: Button
+    private lateinit var settingsFab: FloatingActionButton
     private var lastFailedUrl: String? = null
-    
+    private var currentAppUrl: String? = null
+
+    private val settingsLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val urlChanged = result.data?.getBooleanExtra("url_changed", false) ?: false
+            if (urlChanged) {
+                val newUrl = result.data?.getStringExtra("new_url")
+                if (newUrl != null && newUrl != currentAppUrl) {
+                    currentAppUrl = newUrl
+                    loadAppUrl()
+                }
+            }
+        }
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        // Apply Material You dynamic colors
+
         DynamicColors.applyToActivityIfAvailable(this)
-        
+
+        // Check if app URL is configured, if not go to setup
+        val prefs = getSharedPreferences("displayr_prefs", MODE_PRIVATE)
+        currentAppUrl = prefs.getString("app_url", null)
+
+        // Handle deep link
+        if (handleDeepLink(intent)) {
+            // URL was set from deep link, refresh currentAppUrl
+            currentAppUrl = prefs.getString("app_url", null)
+        }
+
+        if (currentAppUrl == null) {
+            startActivity(Intent(this, SetupActivity::class.java))
+            finish()
+            return
+        }
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
@@ -44,60 +81,65 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        
+
         // Initialize error page views
         errorPageContainer = findViewById(R.id.errorPageContainer)
         errorTitle = findViewById(R.id.errorTitle)
         errorMessage = findViewById(R.id.errorMessage)
         errorDetails = findViewById(R.id.errorDetails)
         retryButton = findViewById(R.id.retryButton)
-        
+        changeUrlButton = findViewById(R.id.changeUrlButton)
+        settingsFab = findViewById(R.id.settingsFab)
+
         retryButton.setOnClickListener {
             lastFailedUrl?.let { url ->
                 hideErrorPage()
                 webView.loadUrl(url)
             }
         }
-        
+
+        changeUrlButton.setOnClickListener {
+            openSettings()
+        }
+
+        settingsFab.setOnClickListener {
+            openSettings()
+        }
+
         // Initialize WebView
         webView = findViewById(R.id.webView)
-        
+
         webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 hideErrorPage()
             }
-            
+
             override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
-                // Show error page for SSL certificate issues
                 lastFailedUrl = view?.url
-                handler?.cancel() // Don't proceed with invalid certificate
+                handler?.cancel()
                 showSslErrorPage(error)
             }
-            
+
             override fun onReceivedError(
                 view: WebView?,
                 request: WebResourceRequest?,
                 error: WebResourceError?
             ) {
                 super.onReceivedError(view, request, error)
-                
-                // Only show error page for main frame errors
                 if (request?.isForMainFrame == true) {
                     lastFailedUrl = request.url.toString()
                     showErrorPage(error)
                 }
             }
-            
+
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                // Page loaded successfully
             }
         }
-        
+
         webView.webChromeClient = WebChromeClient()
-        
-        // Enable JavaScript
+
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.settings.loadWithOverviewMode = true
@@ -107,13 +149,10 @@ class MainActivity : AppCompatActivity() {
         webView.settings.setSupportZoom(true)
         webView.settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         webView.settings.cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
-        // `databaseEnabled` is deprecated; relying on default storage behavior instead
         webView.settings.javaScriptCanOpenWindowsAutomatically = true
-        
-        // Set user agent to Chrome to fix Vue/SPA rendering issues
+
         webView.settings.userAgentString = "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
-        
-        // Back gesture handling using OnBackPressedDispatcher
+
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (webView.canGoBack()) {
@@ -124,7 +163,42 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Load URL with headers to make it look like a real browser
+        loadAppUrl()
+
+        // Fire-and-forget update check
+        UpdateChecker.check(this)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (handleDeepLink(intent)) {
+            val prefs = getSharedPreferences("displayr_prefs", MODE_PRIVATE)
+            currentAppUrl = prefs.getString("app_url", null)
+            if (currentAppUrl != null) {
+                loadAppUrl()
+            }
+        }
+    }
+
+    private fun handleDeepLink(intent: Intent): Boolean {
+        val data = intent.data ?: return false
+        if (data.scheme == "displayr") {
+            val url = data.getQueryParameter("url")
+            if (!url.isNullOrBlank()) {
+                val prefs = getSharedPreferences("displayr_prefs", MODE_PRIVATE)
+                prefs.edit().putString("app_url", url).apply()
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun openSettings() {
+        settingsLauncher.launch(Intent(this, SettingsActivity::class.java))
+    }
+
+    private fun loadAppUrl() {
+        val url = currentAppUrl ?: return
         val headers = mapOf(
             "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
             "Accept-Language" to "en-US,en;q=0.9",
@@ -133,7 +207,7 @@ class MainActivity : AppCompatActivity() {
             "Connection" to "keep-alive",
             "Upgrade-Insecure-Requests" to "1"
         )
-        webView.loadUrl("https://heckr.dev/", headers)
+        webView.loadUrl(url, headers)
     }
     
     private fun showErrorPage(error: WebResourceError?) {

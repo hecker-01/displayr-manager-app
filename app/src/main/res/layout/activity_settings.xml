@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="?android:attr/colorBackground">
+
+    <com.google.android.material.appbar.MaterialToolbar android:id="@+id/settingsToolbar" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" app:navigationIcon="?attr/homeAsUpIndicator" app:title="@string/settings_title" />
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+
+            <!-- App URL -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/urlCard" android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="12dp" style="?attr/materialCardViewOutlinedStyle" android:layout_marginBottom="12dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_app_url" android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                    <TextView android:id="@+id/urlValue" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/settings_app_url_not_set" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Check for updates -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/updateCard" android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="12dp" style="?attr/materialCardViewOutlinedStyle" android:layout_marginBottom="12dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+
+                    <TextView android:id="@+id/updateTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/check_for_updates" android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                    <TextView android:id="@+id/updateSubtitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/tap_to_check" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator android:id="@+id/updateProgress" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:indeterminate="true" android:visibility="gone" app:trackCornerRadius="2dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Clear cache -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/clearCacheCard" android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="12dp" style="?attr/materialCardViewOutlinedStyle" android:layout_marginBottom="12dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_clear_cache" android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/settings_clear_cache_summary" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Version info -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/versionCard" android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="12dp" style="?attr/materialCardViewOutlinedStyle" android:layout_marginBottom="12dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings_version" android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                    <TextView android:id="@+id/versionValue" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

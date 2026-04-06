@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/setupRoot" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="?android:attr/colorBackground">
+
+    <ViewFlipper android:id="@+id/viewFlipper" android:layout_width="match_parent" android:layout_height="match_parent" android:inAnimation="@android:anim/slide_in_left" android:outAnimation="@android:anim/slide_out_right">
+
+        <!-- Step 1: Update Check -->
+        <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="32dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_title" android:textAppearance="?attr/textAppearanceHeadlineMedium" android:layout_marginBottom="8dp" />
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_update_step" android:textAppearance="?attr/textAppearanceTitleMedium" android:textColor="?attr/colorOnSurfaceVariant" android:layout_marginBottom="32dp" />
+
+                <com.google.android.material.card.MaterialCardView android:id="@+id/setupUpdateCard" android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="12dp" style="?attr/materialCardViewOutlinedStyle" android:layout_marginBottom="24dp">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+
+                        <TextView android:id="@+id/setupUpdateTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/check_for_updates" android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                        <TextView android:id="@+id/setupUpdateSubtitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/setup_update_checking" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator android:id="@+id/setupUpdateProgress" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:indeterminate="true" app:trackCornerRadius="2dp" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="end" android:layout_marginTop="8dp">
+
+                    <com.google.android.material.button.MaterialButton android:id="@+id/setupSkipButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_skip" style="?attr/materialButtonOutlinedStyle" android:layout_marginEnd="8dp" android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton android:id="@+id/setupUpdateButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/update_button" android:visibility="gone" />
+
+                    <com.google.android.material.button.MaterialButton android:id="@+id/setupContinueButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_continue" android:visibility="gone" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Step 2: URL Configuration -->
+        <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal" android:padding="32dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_url_step" android:textAppearance="?attr/textAppearanceHeadlineMedium" android:layout_marginBottom="8dp" />
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setup_url_prompt" android:textAppearance="?attr/textAppearanceBodyMedium" android:textColor="?attr/colorOnSurfaceVariant" android:gravity="center" android:layout_marginBottom="32dp" />
+
+                <com.google.android.material.textfield.TextInputLayout android:id="@+id/setupUrlLayout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/setupUrlInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/setup_url_hint" android:inputType="textUri" android:singleLine="true" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton android:id="@+id/setupScanQrButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/setup_scan_qr" style="?attr/materialButtonOutlinedStyle" app:icon="@android:drawable/ic_menu_camera" android:layout_marginBottom="24dp" />
+
+                <com.google.android.material.button.MaterialButton android:id="@+id/setupDoneButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/setup_continue" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </ViewFlipper>
+</LinearLayout>

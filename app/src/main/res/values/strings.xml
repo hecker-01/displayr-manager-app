@@ -1,3 +1,63 @@
 <resources>
     <string name="app_name">Displayr</string>
+
+    <!-- Update system -->
+    <string name="check_for_updates">Check for updates</string>
+    <string name="tap_to_check">Tap to check for new versions</string>
+    <string name="install_permission_denied">Install permission denied</string>
+    <string name="update_available_format">Update available: %s — tap to install</string>
+    <string name="downloading_update">Downloading update…</string>
+    <string name="update_info_missing">Update info missing, cannot download.</string>
+    <string name="checking_for_updates_status">Checking for updates…</string>
+    <string name="up_to_date">You\'re on the latest version</string>
+    <string name="update_check_failed_format">Couldn\'t check for updates: %s</string>
+    <string name="ptdl_update_title">App Update</string>
+    <string name="downloading_version_format">Downloading version %s</string>
+    <string name="download_setup_failed_format">Download setup failed: %s</string>
+    <string name="download_failed_format">Download failed (reason: %d)</string>
+    <string name="download_polling_error_format">Download polling error: %s</string>
+    <string name="download_complete_installing">Download complete, installing…</string>
+    <string name="installing_update">Installing update…</string>
+    <string name="installation_failed_format">Installation failed: %s</string>
+    <string name="update_dialog_title_format">Update to %s</string>
+    <string name="update_dialog_size_format">Download size: %s</string>
+    <string name="download_initializing">Initializing download…</string>
+    <string name="download_progress_format">Downloading… %d%%</string>
+    <string name="installing_update_status">Installing update…</string>
+    <string name="update_button">Update</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="no_changelog">No changelog available.</string>
+
+    <!-- Setup -->
+    <string name="setup_title">Welcome to Displayr</string>
+    <string name="setup_update_step">Checking for updates</string>
+    <string name="setup_update_checking">Checking for the latest version…</string>
+    <string name="setup_skip">Skip</string>
+    <string name="setup_continue">Continue</string>
+    <string name="setup_url_step">Configure Display URL</string>
+    <string name="setup_url_prompt">Enter the URL of your display server, or scan a QR code.</string>
+    <string name="setup_url_hint">http://192.168.1.5:8080</string>
+    <string name="setup_scan_qr">Scan QR Code</string>
+    <string name="setup_url_invalid">URL must start with http:// or https://</string>
+    <string name="setup_url_empty">Please enter a URL</string>
+
+    <!-- QR Scanner -->
+    <string name="qr_scanner_title">Scan QR Code</string>
+    <string name="qr_enter_manually">Enter URL manually</string>
+    <string name="qr_camera_permission_required">Camera permission is required to scan QR codes</string>
+    <string name="qr_no_valid_url">QR code does not contain a valid URL</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_app_url">App URL</string>
+    <string name="settings_app_url_not_set">Not configured</string>
+    <string name="settings_change_url">Change URL</string>
+    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_clear_cache_summary">Clear stored web data and cache</string>
+    <string name="settings_cache_cleared">Cache cleared</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_url_dialog_title">App URL</string>
+
+    <!-- Error page -->
+    <string name="change_url">Change URL</string>
 </resources>
