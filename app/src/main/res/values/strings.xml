@@ -36,7 +36,7 @@
     <string name="setup_continue">Continue</string>
     <string name="setup_url_step">Configure Display URL</string>
     <string name="setup_url_prompt">Enter the URL of your display server, or scan a QR code.</string>
-    <string name="setup_url_hint">http://192.168.1.5:8080</string>
+    <string name="setup_url_hint">Display URL</string>
     <string name="setup_scan_qr">Scan QR Code</string>
     <string name="setup_url_invalid">URL must start with http:// or https://</string>
     <string name="setup_url_empty">Please enter a URL</string>

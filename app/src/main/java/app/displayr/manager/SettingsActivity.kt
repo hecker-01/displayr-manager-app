@@ -55,7 +55,7 @@ class SettingsActivity : AppCompatActivity() {
 
         appUpdater = AppUpdater(this)
 
-        val root = findViewById<android.widget.LinearLayout>(R.id.settingsToolbar).parent as android.view.View
+        val root = findViewById<android.view.View>(android.R.id.content)
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
