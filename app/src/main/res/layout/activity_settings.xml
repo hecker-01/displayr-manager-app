@@ -4,7 +4,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar android:id="@+id/settingsToolbar" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" app:navigationIcon="?attr/homeAsUpIndicator" app:title="@string/settings_title" app:titleCentered="true" />
 
-    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:clipToPadding="false">
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:clipToPadding="false">
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="16dp" android:paddingTop="8dp" android:paddingBottom="24dp">
 
@@ -65,12 +65,34 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Spacer -->
-            <View android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+            <!-- App info card -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/appInfoCard" android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="16dp" app:cardElevation="0dp" style="?attr/materialCardViewFilledStyle" android:layout_marginBottom="8dp">
 
-            <!-- Version info -->
-            <TextView android:id="@+id/versionValue" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" android:paddingTop="16dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="top" android:padding="20dp">
+
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_info" app:tint="?attr/colorPrimary" android:layout_marginEnd="16dp" android:layout_marginTop="2dp" android:contentDescription="@null" />
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+
+                        <TextView android:id="@+id/appInfoName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/app_name" android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                        <TextView android:id="@+id/appInfoDescription" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/app_description" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginTop="12dp" android:layout_marginBottom="10dp" android:background="?attr/colorOutlineVariant" />
+
+                        <TextView android:id="@+id/versionValue" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <TextView android:id="@+id/buildValue" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <TextView android:id="@+id/packageIdValue" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:textAppearance="?attr/textAppearanceBodySmall" android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </ScrollView>
+
+    <TextView android:id="@+id/settingsFooter" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:textAppearance="?attr/textAppearanceLabelSmall" android:textColor="?attr/colorOnSurfaceVariant" android:padding="16dp" />
+
 </LinearLayout>

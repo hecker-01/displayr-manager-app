@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Displayr</string>
+    <string name="app_description">A WebView-based display management app for digital signage.</string>
 
     <!-- Update system -->
     <string name="check_for_updates">Check for updates</string>

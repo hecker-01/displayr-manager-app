@@ -42,7 +42,7 @@ object UpdateChecker {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val url = URL("https://api.github.com/repos/hecker-01/displayr-manager/releases/latest")
+                val url = URL("https://api.github.com/repos/hecker-01/displayr-manager-app/releases/latest")
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "GET"
                 conn.setRequestProperty("Accept", "application/vnd.github.v3+json")

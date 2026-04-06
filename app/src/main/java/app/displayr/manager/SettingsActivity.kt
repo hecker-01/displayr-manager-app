@@ -1,8 +1,14 @@
 package app.displayr.manager
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.format.Formatter
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.view.View
 import android.webkit.WebStorage
 import android.webkit.WebView
 import android.widget.TextView
@@ -32,6 +38,8 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var updateProgress: LinearProgressIndicator
     private lateinit var updateCard: MaterialCardView
     private lateinit var versionValue: TextView
+    private lateinit var buildValue: TextView
+    private lateinit var packageIdValue: TextView
 
     private var urlChanged = false
     private var originalUrl: String? = null
@@ -70,6 +78,8 @@ class SettingsActivity : AppCompatActivity() {
         updateProgress = findViewById(R.id.updateProgress)
         updateCard = findViewById(R.id.updateCard)
         versionValue = findViewById(R.id.versionValue)
+        buildValue = findViewById(R.id.buildValue)
+        packageIdValue = findViewById(R.id.packageIdValue)
 
         val prefs = getSharedPreferences("displayr_prefs", MODE_PRIVATE)
         originalUrl = prefs.getString("app_url", null)
@@ -78,10 +88,28 @@ class SettingsActivity : AppCompatActivity() {
         // Version info
         try {
             val pInfo = packageManager.getPackageInfo(packageName, 0)
-            versionValue.text = getString(R.string.app_name) + " v${pInfo.versionName}"
+            val buildType = if (BuildConfig.DEBUG) "Debug" else "Release"
+            versionValue.text = "Version ${pInfo.versionName}"
+            buildValue.text = "Build ${pInfo.versionCode} · $buildType"
+            packageIdValue.text = packageName
         } catch (_: Exception) {
-            versionValue.text = getString(R.string.app_name)
+            versionValue.text = ""
+            buildValue.text = ""
+            packageIdValue.text = ""
         }
+
+        // Footer with clickable link
+        val footerText = "© Displayr Manager, by heckr.dev"
+        val linkStart = footerText.indexOf("heckr.dev")
+        val spannable = SpannableString(footerText)
+        spannable.setSpan(object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://heckr.dev")))
+            }
+        }, linkStart, linkStart + "heckr.dev".length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val footer = findViewById<TextView>(R.id.settingsFooter)
+        footer.text = spannable
+        footer.movementMethod = LinkMovementMethod.getInstance()
 
         // URL card
         findViewById<MaterialCardView>(R.id.urlCard).setOnClickListener {
