@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
             "Connection" to "keep-alive",
             "Upgrade-Insecure-Requests" to "1"
         )
-        webView.loadUrl("https://court.bram-jesse.sd-lab.nl/", headers)
+        webView.loadUrl("https://heckr.dev/", headers)
     }
     
     private fun showErrorPage(error: WebResourceError?) {
