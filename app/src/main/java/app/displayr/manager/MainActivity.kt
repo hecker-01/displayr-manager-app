@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.SslErrorHandler
 import android.webkit.ValueCallback
@@ -181,7 +182,8 @@ class MainActivity : AppCompatActivity() {
                 return try {
                     fileChooserLauncher.launch(chooserIntent)
                     true
-                } catch (_: ActivityNotFoundException) {
+                } catch (exception: ActivityNotFoundException) {
+                    Log.w("MainActivity", "Unable to launch file chooser", exception)
                     deliverFileChooserResult(null)
                     false
                 }
