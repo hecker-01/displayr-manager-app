@@ -164,10 +164,8 @@ class MainActivity : AppCompatActivity() {
                 filePathCallback: ValueCallback<Array<Uri>>?,
                 fileChooserParams: FileChooserParams?
             ): Boolean {
-                if (filePathCallback == null) {
-                    return false
-                }
                 if (this@MainActivity.filePathCallback != null) {
+                    filePathCallback.onReceiveValue(null)
                     return false
                 }
                 this@MainActivity.filePathCallback = filePathCallback
