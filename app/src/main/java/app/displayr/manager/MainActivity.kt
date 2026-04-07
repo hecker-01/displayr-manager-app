@@ -163,15 +163,15 @@ class MainActivity : AppCompatActivity() {
         webView.webChromeClient = object : WebChromeClient() {
             override fun onShowFileChooser(
                 webView: WebView?,
-                filePathCallback: ValueCallback<Array<Uri>>?,
+                incomingFilePathCallback: ValueCallback<Array<Uri>>?,
                 fileChooserParams: FileChooserParams?
             ): Boolean {
                 if (isFileChooserPending) {
-                    filePathCallback?.onReceiveValue(null)
+                    incomingFilePathCallback?.onReceiveValue(null)
                     return false
                 }
                 isFileChooserPending = true
-                this@MainActivity.filePathCallback = filePathCallback
+                this@MainActivity.filePathCallback = incomingFilePathCallback
 
                 val chooserIntent = fileChooserParams?.createIntent()
                     ?: Intent(Intent.ACTION_GET_CONTENT).apply {
@@ -183,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                     fileChooserLauncher.launch(chooserIntent)
                     true
                 } catch (exception: ActivityNotFoundException) {
-                    Log.w("MainActivity", "Unable to launch file chooser", exception)
+                    Log.w(MainActivity::class.java.simpleName, "Unable to launch file chooser", exception)
                     deliverFileChooserResult(null)
                     false
                 }
