@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private var lastFailedUrl: String? = null
     private var currentAppUrl: String? = null
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
+    private var isFileChooserPending = false
 
     private val settingsLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -164,9 +165,11 @@ class MainActivity : AppCompatActivity() {
                 filePathCallback: ValueCallback<Array<Uri>>?,
                 fileChooserParams: FileChooserParams?
             ): Boolean {
-                if (this@MainActivity.filePathCallback != null) {
-                    deliverFileChooserResult(null)
+                if (isFileChooserPending) {
+                    filePathCallback.onReceiveValue(null)
+                    return false
                 }
+                isFileChooserPending = true
                 this@MainActivity.filePathCallback = filePathCallback
 
                 val chooserIntent = fileChooserParams?.createIntent()
@@ -271,6 +274,7 @@ class MainActivity : AppCompatActivity() {
     private fun deliverFileChooserResult(selection: Array<Uri>?) {
         val callback = filePathCallback
         filePathCallback = null
+        isFileChooserPending = false
         callback?.onReceiveValue(selection)
     }
     
