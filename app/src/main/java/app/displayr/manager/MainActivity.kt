@@ -60,14 +60,9 @@ class MainActivity : AppCompatActivity() {
     private val fileChooserLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        val callback = filePathCallback
-        try {
-            callback?.onReceiveValue(
-                WebChromeClient.FileChooserParams.parseResult(result.resultCode, result.data)
-            )
-        } finally {
-            filePathCallback = null
-        }
+        deliverFileChooserResult(
+            WebChromeClient.FileChooserParams.parseResult(result.resultCode, result.data)
+        )
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -169,7 +164,10 @@ class MainActivity : AppCompatActivity() {
                 filePathCallback: ValueCallback<Array<Uri>>?,
                 fileChooserParams: FileChooserParams?
             ): Boolean {
-                if (this@MainActivity.filePathCallback != null || filePathCallback == null) {
+                if (filePathCallback == null) {
+                    return false
+                }
+                if (this@MainActivity.filePathCallback != null) {
                     return false
                 }
                 this@MainActivity.filePathCallback = filePathCallback
@@ -184,8 +182,7 @@ class MainActivity : AppCompatActivity() {
                     fileChooserLauncher.launch(chooserIntent)
                     true
                 } catch (_: ActivityNotFoundException) {
-                    this@MainActivity.filePathCallback?.onReceiveValue(null)
-                    this@MainActivity.filePathCallback = null
+                    deliverFileChooserResult(null)
                     false
                 }
             }
@@ -272,6 +269,12 @@ class MainActivity : AppCompatActivity() {
             "Upgrade-Insecure-Requests" to "1"
         )
         webView.loadUrl(url, headers)
+    }
+
+    private fun deliverFileChooserResult(selection: Array<Uri>?) {
+        val callback = filePathCallback
+        filePathCallback = null
+        callback?.onReceiveValue(selection)
     }
     
     private fun showErrorPage(error: WebResourceError?) {
