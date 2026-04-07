@@ -1,20 +1,15 @@
 package app.displayr.manager
 
 import android.annotation.SuppressLint
-import android.app.DownloadManager
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.View
-import android.webkit.CookieManager
 import android.webkit.SslErrorHandler
-import android.webkit.URLUtil
 import android.webkit.ValueCallback
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -23,7 +18,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -195,9 +189,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        webView.setDownloadListener { url, userAgent, contentDisposition, mimeType, _ ->
-            enqueueWebDownload(url, userAgent, contentDisposition, mimeType)
-        }
 
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
@@ -287,58 +278,6 @@ class MainActivity : AppCompatActivity() {
         filePathCallback = null
         isFileChooserPending = false
         callback?.onReceiveValue(selection)
-    }
-
-    private fun enqueueWebDownload(
-        url: String?,
-        userAgent: String?,
-        contentDisposition: String?,
-        mimeType: String?
-    ) {
-        if (url.isNullOrBlank()) {
-            Toast.makeText(this, R.string.web_download_failed, Toast.LENGTH_SHORT).show()
-            return
-        }
-        if (!URLUtil.isNetworkUrl(url)) {
-            Toast.makeText(this, R.string.web_download_failed, Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        try {
-            val fileName = URLUtil.guessFileName(url, contentDisposition, mimeType)
-            val request = DownloadManager.Request(Uri.parse(url))
-                .setTitle(fileName)
-                .setDescription(getString(R.string.web_download_description))
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-                .setAllowedOverMetered(true)
-                .setAllowedOverRoaming(true)
-
-            mimeType?.takeIf { it.isNotBlank() }?.let {
-                request.setMimeType(it)
-            }
-
-            userAgent?.takeIf { it.isNotBlank() }?.let {
-                request.addRequestHeader("User-Agent", it)
-            }
-            CookieManager.getInstance().getCookie(url)?.takeIf { it.isNotBlank() }?.let {
-                request.addRequestHeader("Cookie", it)
-            }
-            webView.url?.takeIf { it.isNotBlank() }?.let {
-                request.addRequestHeader("Referer", it)
-            }
-
-            val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            downloadManager.enqueue(request)
-            Toast.makeText(
-                this,
-                getString(R.string.web_download_started_format, fileName),
-                Toast.LENGTH_SHORT
-            ).show()
-        } catch (exception: Exception) {
-            Log.w(MainActivity::class.java.simpleName, "Unable to enqueue web download", exception)
-            Toast.makeText(this, R.string.web_download_failed, Toast.LENGTH_SHORT).show()
-        }
     }
     
     private fun showErrorPage(error: WebResourceError?) {

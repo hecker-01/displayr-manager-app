@@ -69,9 +69,6 @@
     <string name="settings_cache_cleared">Cache cleared</string>
     <string name="settings_version">Version</string>
     <string name="settings_url_dialog_title">Display URL</string>
-    <string name="web_download_description">Downloading file…</string>
-    <string name="web_download_started_format">Downloading %s</string>
-    <string name="web_download_failed">Couldn\'t start download</string>
 
     <!-- Error page -->
     <string name="error_connection_title">Connection Error</string>
