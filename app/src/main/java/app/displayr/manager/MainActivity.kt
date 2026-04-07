@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
                 fileChooserParams: FileChooserParams?
             ): Boolean {
                 if (isFileChooserPending) {
-                    filePathCallback.onReceiveValue(null)
+                    filePathCallback?.onReceiveValue(null)
                     return false
                 }
                 isFileChooserPending = true
