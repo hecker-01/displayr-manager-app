@@ -1,17 +1,20 @@
 package app.displayr.manager
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
 import android.view.View
 import android.webkit.SslErrorHandler
+import android.webkit.ValueCallback
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.webkit.WebChromeClient
+import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var updateBadge: View
     private var lastFailedUrl: String? = null
     private var currentAppUrl: String? = null
+    private var filePathCallback: ValueCallback<Array<Uri>>? = null
 
     private val settingsLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -51,6 +55,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private val fileChooserLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        filePathCallback?.onReceiveValue(
+            WebChromeClient.FileChooserParams.parseResult(result.resultCode, result.data)
+        )
+        filePathCallback = null
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -146,7 +159,31 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        webView.webChromeClient = WebChromeClient()
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onShowFileChooser(
+                webView: WebView?,
+                filePathCallback: ValueCallback<Array<Uri>>?,
+                fileChooserParams: FileChooserParams?
+            ): Boolean {
+                this@MainActivity.filePathCallback?.onReceiveValue(null)
+                this@MainActivity.filePathCallback = filePathCallback
+
+                val chooserIntent = fileChooserParams?.createIntent()
+                    ?: Intent(Intent.ACTION_GET_CONTENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "*/*"
+                    }
+
+                return try {
+                    fileChooserLauncher.launch(chooserIntent)
+                    true
+                } catch (_: ActivityNotFoundException) {
+                    this@MainActivity.filePathCallback?.onReceiveValue(null)
+                    this@MainActivity.filePathCallback = null
+                    false
+                }
+            }
+        }
 
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
