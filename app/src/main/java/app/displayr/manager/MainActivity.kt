@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
                 incomingFilePathCallback: ValueCallback<Array<Uri>>?,
                 fileChooserParams: FileChooserParams?
             ): Boolean {
-                if (isFileChooserPending) {
+                if (isFileChooserPending || this@MainActivity.filePathCallback != null) {
                     incomingFilePathCallback?.onReceiveValue(null)
                     return false
                 }
@@ -275,8 +275,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun deliverFileChooserResult(selection: Array<Uri>?) {
         val callback = filePathCallback
-        isFileChooserPending = false
         filePathCallback = null
+        isFileChooserPending = false
         callback?.onReceiveValue(selection)
     }
     
