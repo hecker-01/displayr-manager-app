@@ -165,8 +165,7 @@ class MainActivity : AppCompatActivity() {
                 fileChooserParams: FileChooserParams?
             ): Boolean {
                 if (this@MainActivity.filePathCallback != null) {
-                    filePathCallback.onReceiveValue(null)
-                    return false
+                    deliverFileChooserResult(null)
                 }
                 this@MainActivity.filePathCallback = filePathCallback
 
