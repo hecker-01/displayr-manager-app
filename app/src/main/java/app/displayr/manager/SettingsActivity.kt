@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.pm.PackageInfoCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -97,7 +98,7 @@ class SettingsActivity : AppCompatActivity() {
             val pInfo = packageManager.getPackageInfo(packageName, 0)
             val buildType = if (BuildConfig.DEBUG) "Debug" else "Release"
             versionValue.text = "Version ${pInfo.versionName}"
-            buildValue.text = "Build ${pInfo.versionCode} · $buildType"
+            buildValue.text = "Build ${PackageInfoCompat.getLongVersionCode(pInfo)} · $buildType"
             packageIdValue.text = packageName
         } catch (_: Exception) {
             versionValue.text = ""
