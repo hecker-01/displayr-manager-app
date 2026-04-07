@@ -37,7 +37,7 @@
     <string name="setup_step_2_of_2">Step 2 of 2</string>
     <string name="setup_url_set_from_qr">URL detected from QR code</string>
     <string name="url_changed_title">URL Changed</string>
-    <string name="url_changed_message">The display URL has been updated. Tap OK to load it.</string>
+    <string name="url_changed_message">The dashboard URL has been updated. Tap OK to load it.</string>
     <string name="ok">OK</string>
     <string name="setup_update_step">App Updates</string>
     <string name="setup_update_subtitle">Making sure you\'re running the latest version.</string>
@@ -45,8 +45,8 @@
     <string name="setup_skip">Skip</string>
     <string name="setup_continue">Continue</string>
     <string name="setup_done">Finish Setup</string>
-    <string name="setup_url_step">Display URL</string>
-    <string name="setup_url_prompt">Enter the URL your display should load, or scan a QR code to fill it in automatically.</string>
+    <string name="setup_url_step">Dashboard URL</string>
+    <string name="setup_url_prompt">Enter the URL the app should load, or scan a QR code to fill it in automatically.</string>
     <string name="setup_url_hint">https://example.com</string>
     <string name="setup_scan_qr">Scan QR Code</string>
     <string name="setup_url_invalid">URL must start with http:// or https://</string>
@@ -61,14 +61,14 @@
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
-    <string name="settings_app_url">Display URL</string>
+    <string name="settings_app_url">Dashboard URL</string>
     <string name="settings_app_url_not_set">Not configured</string>
     <string name="settings_change_url">Change URL</string>
     <string name="settings_clear_cache">Clear Cache</string>
     <string name="settings_clear_cache_summary">Clear stored web data and cache</string>
     <string name="settings_cache_cleared">Cache cleared</string>
     <string name="settings_version">Version</string>
-    <string name="settings_url_dialog_title">Display URL</string>
+    <string name="settings_url_dialog_title">Dashboard URL</string>
 
     <!-- Error page -->
     <string name="error_connection_title">Connection Error</string>
