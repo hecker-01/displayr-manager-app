@@ -273,8 +273,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun deliverFileChooserResult(selection: Array<Uri>?) {
         val callback = filePathCallback
-        filePathCallback = null
         isFileChooserPending = false
+        filePathCallback = null
         callback?.onReceiveValue(selection)
     }
     
