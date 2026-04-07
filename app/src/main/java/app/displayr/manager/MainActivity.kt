@@ -60,10 +60,14 @@ class MainActivity : AppCompatActivity() {
     private val fileChooserLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        filePathCallback?.onReceiveValue(
-            WebChromeClient.FileChooserParams.parseResult(result.resultCode, result.data)
-        )
-        filePathCallback = null
+        val callback = filePathCallback
+        try {
+            callback?.onReceiveValue(
+                WebChromeClient.FileChooserParams.parseResult(result.resultCode, result.data)
+            )
+        } finally {
+            filePathCallback = null
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -165,7 +169,9 @@ class MainActivity : AppCompatActivity() {
                 filePathCallback: ValueCallback<Array<Uri>>?,
                 fileChooserParams: FileChooserParams?
             ): Boolean {
-                this@MainActivity.filePathCallback?.onReceiveValue(null)
+                if (this@MainActivity.filePathCallback != null || filePathCallback == null) {
+                    return false
+                }
                 this@MainActivity.filePathCallback = filePathCallback
 
                 val chooserIntent = fileChooserParams?.createIntent()
