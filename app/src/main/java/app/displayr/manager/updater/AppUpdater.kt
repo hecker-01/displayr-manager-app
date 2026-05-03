@@ -169,7 +169,7 @@ class AppUpdater(private val activity: ComponentActivity) {
                 .setTitle(context.getString(R.string.ptdl_update_title))
                 .setDescription(context.getString(R.string.downloading_version_format, version))
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, fileName)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
                 .setAllowedOverMetered(true)
                 .setAllowedOverRoaming(true)
 
@@ -257,7 +257,7 @@ class AppUpdater(private val activity: ComponentActivity) {
             }
 
             val file = File(
-                context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
                 fileName
             )
             if (!file.exists()) return
